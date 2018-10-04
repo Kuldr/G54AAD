@@ -109,3 +109,35 @@ def partition(list, lo, hi):
 #Actually do the quickSort
 quickSort(r, 0, len(r)-1)
 print(r)
+
+# Task 5 - Max Sub Array -------------------------------------------------------
+givenList = [13, -3, -25, -20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7]
+
+# The number of sub arrays is the triangle number relating to the length of the list
+# This naive approach runs in O(n^3) time as it takes n time to calcualate the sumSubArray
+#       and it takes n^2 time to run findSubarrays.
+#       There is also time to sort the list at the end but that could run in a linear sweep
+
+def sumSubArray(list, intial, final):
+    sum = 0
+    for i in range(intial, final+1):
+        sum = sum + list[i]
+    return sum
+
+def findSubarrays(list):
+    resultsArr = []
+    # i is the start point
+    for i in range(0,len(list)):
+        # j is the end point
+        for j in range(i,len(list)):
+            resultsArr.append((i,j,sumSubArray(list, i, j)))
+    return resultsArr
+
+def takeThird(elem):
+        return elem[2]
+
+allSubArrays = findSubarrays(givenList)
+allSubArrays.sort(key = takeThird, reverse = True)
+print(allSubArrays)
+print(len(allSubArrays))
+print(allSubArrays[0])
