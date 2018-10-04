@@ -47,4 +47,65 @@ for i in range(1, len(r)):
     for j in range(i, 0, -1):
         if( r[j-1] > r[j] ):
             r[j],r[j-1] = r[j-1],r[j]
-print(r)            
+print(r)
+
+# Task 4 - Merge Sort ----------------------------------------------------------
+# Create a random list of 10 ints between 0 and 100
+r = random.sample(range(1,100),10)
+print(r)
+
+def mergeSort(list):
+    # Base Case
+    if( len(list) <= 1 ):
+        return list
+    # Reucursive Case
+    listL = list[:len(list)//2]
+    listR = list[len(list)//2:]
+    listL = mergeSort(listL)
+    listR = mergeSort(listR)
+    return merge(listL, listR)
+
+def merge(left, right):
+    result = []
+    while( (len(left) != 0) and (len(right) != 0) ):
+        if left[0] <= right[0]:
+            result.append(left.pop(0))
+        else:
+            result.append(right.pop(0))
+
+    #Add the rest of the lists to the result
+    while( len(left) != 0 ):
+        result.append(left.pop(0))
+    while( len(right) != 0 ):
+        result.append(right.pop(0))
+    # Return the result
+    return result
+
+# Actually do the merge sort
+rprime = mergeSort(r)
+print(rprime)
+
+# Task 4 - Quick Sort ----------------------------------------------------------
+# Create a random list of 10 ints between 0 and 100
+r = random.sample(range(1,100),10)
+print(r)
+
+def quickSort(list, lo, hi):
+    if( lo < hi ):
+        p = partition(list, lo, hi)
+        quickSort(list, lo, p-1)
+        quickSort(list, p+1, hi)
+
+def partition(list, lo, hi):
+    pivot = list[hi]
+    i = lo
+    for j in range(lo, hi):
+        if( list[j] < pivot ):
+            list[j],list[i] = list[i],list[j]
+            i = i + 1
+    list[hi],list[i] = list[i],list[hi]
+    return i
+
+#Actually do the quickSort
+quickSort(r, 0, len(r)-1)
+print(r)
