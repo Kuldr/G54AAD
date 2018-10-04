@@ -126,11 +126,7 @@ def sumSubArray(list, intial, final):
 
 def findSubarrays(list):
     resultsArr = []
-    # i is the start point
-    for i in range(0,len(list)):
-        # j is the end point
-        for j in range(i,len(list)):
-            resultsArr.append((i,j,sumSubArray(list, i, j)))
+    resultsArr = [(i,j,sumSubArray(list, i, j)) for i in range(0, len(list)) for j in range(i, len(list))]
     return resultsArr
 
 def takeThird(elem):
