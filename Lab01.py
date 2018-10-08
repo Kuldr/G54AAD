@@ -116,7 +116,8 @@ givenList = [13, -3, -25, -20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7]
 # The number of sub arrays is the triangle number relating to the length of the list
 # This naive approach runs in O(n^3) time as it takes n time to calcualate the sumSubArray
 #       and it takes n^2 time to run findSubarrays.
-#       There is also time to sort the list at the end but that could run in a linear sweep
+#       There is also time to sort the list at the end but that could run in a linear sweep theorecitcally
+#           We could also keep track the maximum while we go too so that the whole thing is only n^3
 
 def sumSubArray(list, intial, final):
     sum = 0
