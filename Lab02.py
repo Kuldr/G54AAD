@@ -1,16 +1,16 @@
 import random
 import time
 import sys
+import timeit
 
 # Meh Method but it could be useful
-# import timeit
 # print("Stupid Max Sub Array - TimeIt")
 # print(timeit.timeit(stupidMaxSubArray, number=100000)/100000)
 
 # Task 3 - Max Sub Array -------------------------------------------------------
-sizeOfList = 10**4
-randomList = random.sample(range(-sizeOfList,sizeOfList),sizeOfList)
-
+# Constants
+sizeOfList = 10**1
+numberToAverage = 1000
 
 # Last weeks implementation ----------------------------------------------------
 def sumSubArray(array, intial, final):
@@ -27,20 +27,17 @@ def findSubarrays(array):
 def takeThird(elem):
     return elem[2]
 
-def stupidMaxSubArray():
-    allSubArrays = findSubarrays(randomList)
+def stupidMaxSubArray(array):
+    allSubArrays = findSubarrays(array)
     allSubArrays.sort(key = takeThird, reverse = True)
     return allSubArrays[0]
 
-print("Stupid Max Sub Array")
-start = time.time()
-print(stupidMaxSubArray())
-end = time.time()
-print(end - start)
+def stupidMaxSubArrayRnd():
+    rndList = random.sample(range(-sizeOfList,sizeOfList),sizeOfList)
+    stupidMaxSubArray(rndList)
 
 # O(n^2) implementation --------------------------------------------------------
-def betterMaxSubArray():
-    array = randomList
+def betterMaxSubArray(array):
     imax = jmax = 0
     maxSum = - sys.maxsize - 1 # -∞
 
@@ -54,15 +51,17 @@ def betterMaxSubArray():
 
     return(imax, jmax, sum(array[imax:jmax+1]))
 
-print("\nO(n^2) Max Sub Array")
-start = time.time()
-print(betterMaxSubArray())
-end = time.time()
-print(end - start)
+def betterMaxSubArrayRnd():
+    rndList = random.sample(range(-sizeOfList,sizeOfList),sizeOfList)
+    betterMaxSubArray(rndList)
 
 # Divide and Conquer implementation --------------------------------------------
-def divAndConMaxSubArraySetup():
-    return divAndConMaxSubArray(randomList, 0, len(randomList)-1)
+def divAndConMaxSubArrayRnd():
+    rndList = random.sample(range(-sizeOfList,sizeOfList),sizeOfList)
+    divAndConMaxSubArraySetup(rndList)
+
+def divAndConMaxSubArraySetup(array):
+    return divAndConMaxSubArray(array, 0, len(array)-1)
 
 def divAndConMaxSubArray(array, low, high):
     if( low == high ):
@@ -98,8 +97,37 @@ def maxCrossingSubArray(array, low, mid, high):
             maxRight = j
     return(maxLeft, maxRight, leftSum+rightSum)
 
-print("\nDivide And Conquer Max Sub Array")
+# Timing Code ------------------------------------------------------------------
+print("Size of problem %d" % sizeOfList)
+print("Number to Average %d" % numberToAverage)
+
+#Timing and solution for same problem
+print("\n--------------------Fixed Problem--------------------")
+setList = random.sample(range(-sizeOfList,sizeOfList),sizeOfList)
+
+print("Stupid Max Sub Array")
 start = time.time()
-print(divAndConMaxSubArraySetup())
+print(stupidMaxSubArray(setList))
 end = time.time()
 print(end - start)
+
+print("O(n^2) Max Sub Array")
+start = time.time()
+print(betterMaxSubArray(setList))
+end = time.time()
+print(end - start)
+
+print("Divide And Conquer Max Sub Array")
+start = time.time()
+print(divAndConMaxSubArraySetup(setList))
+end = time.time()
+print(end - start)
+
+# Average timing over multiple runs and with random lists
+print("\n----Average Timing w/ Random List | Over %d Runs-----" % numberToAverage)
+print("Stupid Max Sub Array")
+print(timeit.timeit(stupidMaxSubArrayRnd, number=numberToAverage)/numberToAverage)
+print("Stupid Max Sub Array")
+print(timeit.timeit(betterMaxSubArrayRnd, number=numberToAverage)/numberToAverage)
+print("Stupid Max Sub Array")
+print(timeit.timeit(divAndConMaxSubArrayRnd, number=numberToAverage)/numberToAverage)
