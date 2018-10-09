@@ -33,11 +33,11 @@ def stupidMaxSubArray():
     allSubArrays.sort(key = takeThird, reverse = True)
     return allSubArrays[0]
 
-print("Stupid Max Sub Array")
-start = time.time()
-print(stupidMaxSubArray())
-end = time.time()
-print(end - start)
+# print("Stupid Max Sub Array")
+# start = time.time()
+# print(stupidMaxSubArray())
+# end = time.time()
+# print(end - start)
 
 # O(n^2) implementation --------------------------------------------------------
 def betterMaxSubArray():
