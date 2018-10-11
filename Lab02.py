@@ -9,7 +9,7 @@ import timeit
 
 # Task 3 - Max Sub Array -------------------------------------------------------
 # Constants
-sizeOfList = 10**9
+sizeOfList = 10**6
 numberToAverage = 100
 doFixedTiming = True
 doAverageTiming = False
