@@ -9,8 +9,10 @@ import timeit
 
 # Task 3 - Max Sub Array -------------------------------------------------------
 # Constants
-sizeOfList = 10**1
-numberToAverage = 1000
+sizeOfList = 10**9
+numberToAverage = 100
+doFixedTiming = True
+doAverageTiming = False
 
 # Last weeks implementation ----------------------------------------------------
 def sumSubArray(array, intial, final):
@@ -97,37 +99,105 @@ def maxCrossingSubArray(array, low, mid, high):
             maxRight = j
     return(maxLeft, maxRight, leftSum+rightSum)
 
+# Linear implementation --------------------------------------------------------
+def linearMaxSubArrayRnd():
+    rndList = random.sample(range(-sizeOfList,sizeOfList),sizeOfList)
+    linearMaxSubArray(rndList)
+
+def linearMaxSubArray(array):
+    i = iMax = jMax = 0
+    maxSum = - sys.maxsize - 1
+    # Considering 1 element at a time
+    for j in range(0, len(array)):
+        # newElement on its own
+        elemAloneSum = array[j]
+        # subArray with new element (only if the element can be added to subArray)
+        if( jMax+1 == j ):
+            subWithNewElem = maxSum + array[j]
+        else:
+            subWithNewElem = - sys.maxsize - 1
+
+        if( (elemAloneSum >= maxSum) and (elemAloneSum >= subWithNewElem) ):
+            iMax, jMax, maxSum = j, j, elemAloneSum
+        elif( (subWithNewElem >= maxSum) and (subWithNewElem >= elemAloneSum) ):
+            jMax, maxSum = j, subWithNewElem
+
+    return(iMax, jMax, maxSum)
+
+# Kadane's implementation ------------------------------------------------------
+def kadaneMaxSubArrayRnd():
+    rndList = random.sample(range(-sizeOfList,sizeOfList),sizeOfList)
+    kadaneMaxSubArray(rndList)
+
+def kadaneMaxSubArray(array):
+    maxEndSum = maxBest = - sys.maxsize - 1
+    maxEndi = maxEndj = maxBesti = maxBestj = 0
+    for j in range(0, len(array)-1):
+        # find the max sub array ending at j
+        if( array[j] >= maxEndSum + array[j] ):
+            maxEndSum = array[j]
+            maxEndi = maxEndj = j
+        else:
+            maxEndSum = maxEndSum + array[j]
+            maxEndj = j
+        # find the max array so far
+        if( maxEndSum >= maxBest ):
+            maxBest = maxEndSum
+            maxBesti = maxEndi
+            maxBestj = maxEndj
+
+    return (maxBesti, maxBestj, maxBest)
+
 # Timing Code ------------------------------------------------------------------
 print("Size of problem %d" % sizeOfList)
 print("Number to Average %d" % numberToAverage)
 
+startAll = time.time()
+
 #Timing and solution for same problem
-print("\n--------------------Fixed Problem--------------------")
-setList = random.sample(range(-sizeOfList,sizeOfList),sizeOfList)
+if( doFixedTiming ):
+    print("\n--------------------Fixed Problem--------------------")
+    setList = random.sample(range(-sizeOfList//2,sizeOfList//2),sizeOfList)
 
-print("Stupid Max Sub Array")
-start = time.time()
-print(stupidMaxSubArray(setList))
-end = time.time()
-print(end - start)
-
-print("O(n^2) Max Sub Array")
-start = time.time()
-print(betterMaxSubArray(setList))
-end = time.time()
-print(end - start)
-
-print("Divide And Conquer Max Sub Array")
-start = time.time()
-print(divAndConMaxSubArraySetup(setList))
-end = time.time()
-print(end - start)
+    # print("Stupid Max Sub Array")
+    # start = time.time()
+    # print(stupidMaxSubArray(setList))
+    # end = time.time()
+    # print(end - start)
+    # print("O(n^2) Max Sub Array")
+    # start = time.time()
+    # print(betterMaxSubArray(setList))
+    # end = time.time()
+    # print(end - start)
+    # print("Divide And Conquer Max Sub Array")
+    # start = time.time()
+    # print(divAndConMaxSubArraySetup(setList))
+    # end = time.time()
+    # print(end - start)
+    # print("Linear Max Sub Array")
+    # start = time.time()
+    # print(linearMaxSubArray(setList))
+    # end = time.time()
+    # print(end - start)
+    print("Kadane's Max Sub Array")
+    start = time.time()
+    print(kadaneMaxSubArray(setList))
+    end = time.time()
+    print(end - start)
 
 # Average timing over multiple runs and with random lists
-print("\n----Average Timing w/ Random List | Over %d Runs-----" % numberToAverage)
-print("Stupid Max Sub Array")
-print(timeit.timeit(stupidMaxSubArrayRnd, number=numberToAverage)/numberToAverage)
-print("Stupid Max Sub Array")
-print(timeit.timeit(betterMaxSubArrayRnd, number=numberToAverage)/numberToAverage)
-print("Stupid Max Sub Array")
-print(timeit.timeit(divAndConMaxSubArrayRnd, number=numberToAverage)/numberToAverage)
+if( doAverageTiming ):
+    print("\n----Average Timing w/ Random List | Over %d Runs-----" % numberToAverage)
+    # print("Stupid Max Sub Array")
+    # print(timeit.timeit(stupidMaxSubArrayRnd, number=numberToAverage)/numberToAverage)
+    # print("O(n^2) Max Sub Array")
+    # print(timeit.timeit(betterMaxSubArrayRnd, number=numberToAverage)/numberToAverage)
+    # print("Divide And Conquer Max Sub Array")
+    # print(timeit.timeit(divAndConMaxSubArrayRnd, number=numberToAverage)/numberToAverage)
+    # print("Linear Max Sub Array")
+    # print(timeit.timeit(linearMaxSubArrayRnd, number=numberToAverage)/numberToAverage)
+    print("Kadane's  Max Sub Array")
+    print(timeit.timeit(kadaneMaxSubArrayRnd, number=numberToAverage)/numberToAverage)
+
+endAll = time.time()
+print("\nTotal Runtime = %d" % (endAll - startAll))
