@@ -1,0 +1,25 @@
+[-10,-6,9,7,-1,2,-9,-4,1,-5,-6,9,-2,1,8,6,6,-1,-7,1]
+
+BigTheta    = grows exactly like than f
+BigOh       = grows not faster than f
+BigOmega    = grows at least than f
+LittleOh    = grows slower than f
+LittleOmega = grows faster than f
+
+Formally: T(n) = O(f(n))
+
+There exists a constant c>0
+      and a number n0
+Such that for all n >= n0, 0 <= T(n) <= c*f(n)
+
+Formally: T(n) = OMEGA(f(n))
+
+There exists a constant c>0
+      and a number n0
+Such that for all n >= n0, 0 <= T(n) >= c*f(n)
+
+Formally: T(n) = o(f(n))
+
+There exists a constant c>0
+      and a number n0
+Such that for all n >= n0, 0 <= T(n) < c*f(n)     
