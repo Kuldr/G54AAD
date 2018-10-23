@@ -23,5 +23,12 @@ insRBTree (Node col x lTree rTree) y | y == x = Node col x lTree rTree
                                         | y >  x = balance $ Node col x lTree (insRBTree rTree y)
 
 balance :: RBTree -> RBTree
+-- Black left Red left Red
 balance (Node Black x3 (Node Red x2 (Node Red x1 t1 t2) t3) t4) = Node Red x2 (Node Black x1 t1 t2) (Node Black x3 t3 t4)
-balance t = t
+-- Black left Red right Red
+balance (Node Black x3 (Node Red x1 t1 (Node Red x2 t2 t3)) t4) = Node Red x2 (Node Black x1 t1 t2) (Node Black x3 t3 t4)
+-- Black right Red left Red
+balance (Node Black x1 t1 (Node Red x3 (Node Red x2 t2 t3) t4)) = Node Red x2 (Node Black x1 t1 t2) (Node Black x3 t3 t4)
+-- Black right Red right Red
+balance (Node Black x1 t1 (Node Red x2 t2 (Node Red x3 t3 t4))) = Node Red x2 (Node Black x1 t1 t2) (Node Black x3 t3 t4)
+balance t = t 
