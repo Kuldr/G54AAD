@@ -11,10 +11,17 @@ searchRBTree (Node _ x lTree rTree) y | x == y = True
                                       | y > x  = searchRBTree rTree y
 
 insertRBTree :: RBTree -> Int -> RBTree
-insertRBTree Nil y = Node Red y Nil Nil
-insertRBTree (Node col x lTree rTree) y | y == x = Node col x lTree rTree
-                                        | y <  x = balance $ Node col x (insertRBTree lTree y) rTree
-                                        | y >  x = balance $ Node col x lTree (insertRBTree rTree y)
+insertRBTree t y = blackRootRBTree $ insRBTree t y
+
+blackRootRBTree :: RBTree -> RBTree
+blackRootRBTree (Node col x t1 t2) = Node Black x t1 t2
+
+insRBTree :: RBTree -> Int -> RBTree
+insRBTree Nil y = Node Red y Nil Nil
+insRBTree (Node col x lTree rTree) y | y == x = Node col x lTree rTree
+                                        | y <  x = balance $ Node col x (insRBTree lTree y) rTree
+                                        | y >  x = balance $ Node col x lTree (insRBTree rTree y)
 
 balance :: RBTree -> RBTree
+balance (Node Black x3 (Node Red x2 (Node Red x1 t1 t2) t3) t4) = Node Red x2 (Node Black x1 t1 t2) (Node Black x3 t3 t4)
 balance t = t
